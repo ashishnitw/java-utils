@@ -1,6 +1,6 @@
-# Java Common Utils
+# Java Utils
 
-[![Build Status](https://github.com/ashishnitw/java-common-utils/actions/workflows/publish.yml/badge.svg)](https://github.com/ashishnitw/java-common-utils/actions/workflows/publish.yml)
+[![Build Status](https://github.com/ashishnitw/java-utils/actions/workflows/publish.yml/badge.svg)](https://github.com/ashishnitw/java-utils/actions/workflows/publish.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Java Version](https://img.shields.io/badge/Java-17-blue.svg)](https://openjdk.java.net/projects/jdk/17/)
 
@@ -50,10 +50,12 @@ First, configure your GitHub Personal Access Token (see [GitHub Personal Access 
 
 Then add the following to your `build.gradle`:
 
+#### Core Utilities (Common Module)
+
 ```groovy
 repositories {
     maven {
-        url = uri("https://maven.pkg.github.com/ashishnitw/java-common-utils")
+        url = uri("https://maven.pkg.github.com/ashishnitw/java-utils")
         credentials {
             username = project.findProperty("gpr.user") ?: System.getenv("GPR_USER")
             password = project.findProperty("gpr.token") ?: System.getenv("GPR_TOKEN")
@@ -66,17 +68,35 @@ dependencies {
 }
 ```
 
+#### Observability Utils Module (optional)
+
+```groovy
+dependencies {
+    implementation 'io.github.ashishnitw:observability-utils:1.0.0'
+}
+```
+
+#### Spring Utils (optional)
+
+```groovy
+dependencies {
+    implementation 'io.github.ashishnitw:spring-utils:1.0.0'
+}
+```
+
 ### Maven
 
 First, configure your GitHub Personal Access Token (see [GitHub Personal Access Token Setup](#github-personal-access-token-setup) below).
 
 Then add the following to your `pom.xml`:
 
+#### Core Utilities (Common Module)
+
 ```xml
 <repositories>
     <repository>
         <id>github</id>
-        <url>https://maven.pkg.github.com/ashishnitw/java-common-utils</url>
+        <url>https://maven.pkg.github.com/ashishnitw/java-utils</url>
     </repository>
 </repositories>
 
@@ -87,6 +107,26 @@ Then add the following to your `pom.xml`:
         <version>1.0.0</version>
     </dependency>
 </dependencies>
+```
+
+#### Observability Utils Module (optional)
+
+```xml
+<dependency>
+    <groupId>io.github.ashishnitw</groupId>
+    <artifactId>observability-utils</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+#### Spring Utilities (optional)
+
+```xml
+<dependency>
+    <groupId>io.github.ashishnitw</groupId>
+    <artifactId>spring-utils</artifactId>
+    <version>1.0.0</version>
+</dependency>
 ```
 
 ## GitHub Personal Access Token Setup
@@ -142,7 +182,7 @@ Edit `~/.m2/settings.xml` and add:
 ### StringUtils
 
 ```java
-import com.ashishnitw.utils.StringUtils;
+import io.github.ashishnitw.common.StringUtils;
 
 // Check if string is empty or null
 boolean isEmpty = StringUtils.isEmpty(str);  // true for null or ""
@@ -162,7 +202,7 @@ String nullable = StringUtils.emptyToNull("");  // null
 ### DateTimeUtils
 
 ```java
-import com.ashishnitw.utils.DateTimeUtils;
+import io.github.ashishnitw.common.DateTimeUtils;
 import java.time.LocalDateTime;
 
 // Get current timestamp
@@ -184,7 +224,7 @@ LocalDateTime fromEpoch = DateTimeUtils.fromEpochMilli(epochMilli);
 ### JsonUtils
 
 ```java
-import com.ashishnitw.utils.JsonUtils;
+import io.github.ashishnitw.common.JsonUtils;
 
 // Serialize object to JSON
 MyObject obj = new MyObject("test", 123);
@@ -200,7 +240,7 @@ String prettyJson = JsonUtils.toJsonPretty(obj);
 ### ValidationUtils
 
 ```java
-import com.ashishnitw.utils.ValidationUtils;
+import io.github.ashishnitw.common.ValidationUtils;
 
 // Validate email
 boolean isEmail = ValidationUtils.isValidEmail("test@example.com");  // true
@@ -221,7 +261,7 @@ boolean notEmpty = ValidationUtils.isNotEmpty("test");  // true
 ### CollectionUtils
 
 ```java
-import com.ashishnitw.utils.CollectionUtils;
+import io.github.ashishnitw.common.CollectionUtils;
 import java.util.List;
 import java.util.Arrays;
 
@@ -240,7 +280,7 @@ String noFirst = CollectionUtils.firstOrNull(null);  // null
 ### ExceptionUtils
 
 ```java
-import com.ashishnitw.utils.ExceptionUtils;
+import io.github.ashishnitw.common.ExceptionUtils;
 
 try {
     // Some code that throws exception
@@ -267,8 +307,8 @@ try {
 
 ```bash
 # Clone the repository
-git clone https://github.com/ashishnitw/java-common-utils.git
-cd java-common-utils
+git clone https://github.com/ashishnitw/java-utils.git
+cd java-utils
 
 # Build the project
 ./gradlew build

@@ -1,1 +1,5 @@
-rootProject.name = 'common-utils'
+rootProject.name = 'java-utils'
+
+include 'spring-utils'
+include 'common-utils'
+include 'observability-utils'
