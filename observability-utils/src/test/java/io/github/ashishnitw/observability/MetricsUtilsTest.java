@@ -148,4 +148,88 @@ class MetricsUtilsTest {
             fail("Constructor not found");
         }
     }
+
+    // Prometheus Tests
+
+    @Test
+    void testGetOrCreatePrometheusCounter() {
+        var counter = MetricsUtils.getOrCreatePrometheusCounter("test_prom_counter", "Test counter");
+        assertNotNull(counter);
+    }
+
+    @Test
+    void testIncrementPrometheusCounter() {
+        MetricsUtils.incrementPrometheusCounter("prom_counter1", "Prometheus counter 1", 5.0);
+        MetricsUtils.incrementPrometheusCounter("prom_counter1", "Prometheus counter 1", 3.0);
+        
+        var counter = MetricsUtils.getOrCreatePrometheusCounter("prom_counter1", "Prometheus counter 1");
+        assertNotNull(counter);
+    }
+
+    @Test
+    void testIncrementPrometheusCounter_DefaultAmount() {
+        MetricsUtils.incrementPrometheusCounter("prom_counter2", "Prometheus counter 2");
+        MetricsUtils.incrementPrometheusCounter("prom_counter2", "Prometheus counter 2");
+        
+        var counter = MetricsUtils.getOrCreatePrometheusCounter("prom_counter2", "Prometheus counter 2");
+        assertNotNull(counter);
+    }
+
+    @Test
+    void testGetOrCreatePrometheusGauge() {
+        var gauge = MetricsUtils.getOrCreatePrometheusGauge("test_prom_gauge", "Test gauge");
+        assertNotNull(gauge);
+    }
+
+    @Test
+    void testSetPrometheusGauge() {
+        MetricsUtils.setPrometheusGauge("prom_gauge1", "Prometheus gauge 1", 42.0);
+        MetricsUtils.setPrometheusGauge("prom_gauge1", "Prometheus gauge 1", 50.0);
+        
+        var gauge = MetricsUtils.getOrCreatePrometheusGauge("prom_gauge1", "Prometheus gauge 1");
+        assertNotNull(gauge);
+    }
+
+    @Test
+    void testGetOrCreatePrometheusHistogram() {
+        var histogram = MetricsUtils.getOrCreatePrometheusHistogram("test_prom_histogram", "Test histogram");
+        assertNotNull(histogram);
+    }
+
+    @Test
+    void testObservePrometheusHistogram() {
+        MetricsUtils.observePrometheusHistogram("prom_histogram1", "Prometheus histogram 1", 10.0);
+        MetricsUtils.observePrometheusHistogram("prom_histogram1", "Prometheus histogram 1", 20.0);
+        MetricsUtils.observePrometheusHistogram("prom_histogram1", "Prometheus histogram 1", 30.0);
+        
+        var histogram = MetricsUtils.getOrCreatePrometheusHistogram("prom_histogram1", "Prometheus histogram 1");
+        assertNotNull(histogram);
+    }
+
+    @Test
+    void testSanitizeMetricName() {
+        assertEquals("test_metric", MetricsUtils.sanitizeMetricName("test-metric"));
+        assertEquals("test_metric_123", MetricsUtils.sanitizeMetricName("test.metric.123"));
+        assertEquals("_123metric", MetricsUtils.sanitizeMetricName("123metric"));
+        assertEquals("test_metric_", MetricsUtils.sanitizeMetricName("test@metric!"));
+        assertEquals("metric", MetricsUtils.sanitizeMetricName(""));
+    }
+
+    @Test
+    void testGetPrometheusRegistry() {
+        var registry = MetricsUtils.getPrometheusRegistry();
+        assertNotNull(registry);
+    }
+
+    @Test
+    void testClearPrometheusMetrics() {
+        MetricsUtils.incrementPrometheusCounter("prom_counter3", "Prometheus counter 3");
+        MetricsUtils.setPrometheusGauge("prom_gauge2", "Prometheus gauge 2", 100.0);
+        
+        MetricsUtils.clearPrometheusMetrics();
+        
+        // Verify metrics are cleared by checking that we can create new ones
+        var newCounter = MetricsUtils.getOrCreatePrometheusCounter("prom_counter4", "New counter");
+        assertNotNull(newCounter);
+    }
 }

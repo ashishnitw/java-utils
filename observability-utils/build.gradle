@@ -4,6 +4,10 @@ dependencies {
     // SLF4J for logging
     implementation 'org.slf4j:slf4j-api:2.0.9'
     
+    // Prometheus metrics
+    implementation 'io.prometheus:prometheus-metrics-core:1.1.0'
+    implementation 'io.prometheus:prometheus-metrics-exposition-formats:1.1.0'
+    
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
